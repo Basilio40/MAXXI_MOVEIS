@@ -1,0 +1,156 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block content %}
+
+<div class="card">
+    <div class="d-flex bd-highlight">
+      <div class="card-body">
+
+        <h4 class="card-title mb-3">
+          Entregas
+          <div class="dropdown d-inline">
+            <a class="dropdown-toggle text-muted me-3 mb-3 align-middle" href="#" data-bs-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <button type="button" class="btn btn-link shadow-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="feather feather-search icon-sm">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg><span>Buscar</span>
+              </button></a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0">
+              <form class="p-2">
+                <div class="search-box">
+                  <div class="position-relative">
+
+                    <input type="text" name="search" class="form-control rounded bg-light border-0"
+                      hx-get="{% url 'produto:produto_items_search' %}"
+                      hx-trigger="keyup changed delay:250ms, search"
+                      hx-target="#search-results" placeholder="buscando...">
+
+                    <span id="search-results"></span>
+
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </h4>
+
+        <div class="table-responsive">
+          <table class="table table-hover mb-0 align-middle">
+            <thead class="bg-light">
+                <th class="rounded-start" style="width: 15px;">
+                  <div class="form-check">
+                    <input class="form-check-input font-size-16" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault"> </label>
+                  </div>
+                </th>
+                <th>OC</th>
+                <th>Nome do Cliente</th>
+                <th>Data da Venda</th>
+                <th>Detalhes</th>
+                <th>Freteiro</th>
+                <th>Data de Entrega</th>
+                <th>Impermeab</th>
+                <th>Sai de Onde</th>
+                <th>Endereço de Entrega</th>
+                <th>Turno</th>
+                <th>Loja N° (se existir item)</th>
+                <th>Observações</th>
+              </tr>
+              <!-- end tr -->
+            </thead>
+            <!-- end thead -->
+
+            <tbody>
+              {% for entrega in entregas %}
+                <tr>
+                  <td>
+                    <div class="form-check">
+                      <input class="form-check-input font-size-16" type="checkbox" value="" id="flexCheckexampleone">
+                      <label class="form-check-label" for="flexCheckexampleone">
+                      </label>
+                    </div>
+                  </td>
+                  <td class="text-center"><h5>MA{{ entrega }}</h5></td>
+                  <td>
+                    <a href="{{ object.get_absolute_url }}">{{ entrega.cliente }}</a>
+                  </td>
+                  <td>{{entrega.created}}</td>
+                  <td>
+                      <button 
+                      type="button" 
+                      class="btn btn-primary " 
+                      data-bs-toggle="modal"
+                      data-bs-target=".exampleModalFullscreen"
+                      hx-get="{% url 'orcamento:orcamento_detail' entrega.pk %}"
+                      hx-target="#FullscreenLabel"
+                      hx-swap="innerHTML"
+                      >Detalhes</button>
+                        <!-- Full screen modal content -->
+                          <div class="modal fade exampleModalFullscreen" tabindex="-1"
+                                aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true">
+                                  <div class="modal-dialog modal-fullscreen">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="FullscreenLabel">Detalhes</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                  aria-label="Close"></button>
+                                                    </div>
+                                                <div class="modal-body">
+                                                                
+                                                  <div class="modal-footer">
+                                                  <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Fechar</button>
+                                                  </div>       
+                                        </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                  </td>
+                  
+                  <td>
+                    {{entrega.freteiro}}
+                  </td>
+                  <td>{{entrega.data_entrega}}</td>
+                  <td>{{entrega.impermmeab}}</td>
+                  <td>{{entrega.sai_de_onde}}</td>
+                  <td>{{entrega.endereco_entrega}}</td>
+                  <td>{{entrega.turno}}</td>
+                  <td>{{entrega.loja}}</td>
+                  <td>{{entrega.obs_vendas}}</td>
+                  
+                  
+                </tr>
+                {% endfor %}
+
+                
+              
+
+              <!-- end /tr -->
+            </tbody><!-- end tbody -->
+          </table><!-- end table -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function closeModal() {
+      var container = document.getElementById("modals-here")
+      var backdrop = document.getElementById("modal-backdrop")
+      var modal = document.getElementById("modal")
+    
+      modal.classList.remove("show")
+      backdrop.classList.remove("show")
+    
+      setTimeout(function() {
+        container.removeChild(backdrop)
+        container.removeChild(modal)
+      }, 200)
+    }
+  </script>
+
+{% endblock %}

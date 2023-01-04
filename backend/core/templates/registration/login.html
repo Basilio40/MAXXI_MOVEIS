@@ -1,0 +1,73 @@
+{% extends 'base_login.html'%}
+{% load static %}
+
+{% block content %}
+  <!-- Begin page -->
+  <section class="vh-100" >
+    <div class="container py-5 h-100" >
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col col-xl-10" style="background-color: #7F0203;">
+          <div class="card" style="border-radius: 1rem;">
+            <div class="row g-0">
+              <div class="col-md-6 col-lg-5 d-none d-md-block">
+                <img src="{% static '/img/casinha.PNG' %}"  height="500" width="500"
+                  alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+              </div>
+              <div class="col-md-6 col-lg-7 d-flex align-items-center" style="background-color: #7F0203;" >
+                <div class="card-body p-4 p-lg-5 text-black">
+                  <div class="d-flex align-items-center mb-3 pb-1">
+                    
+                    <span class="h1 fw-bold mb-0"><b style="color:#FFF">MAXXI<span style="color:#FFFF12">MÓVEIS</span></b></span>
+                  </div>
+
+                  <form action="." method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-3" >
+                      <label for="exampleInputEmail1" class="form-label" style="color:#fff">Email</label>
+                      <input
+                        id="exampleInputEmail1"
+                        class="form-control"
+                        type="email"
+                        name="username"
+                        aria-describedby="emailHelp"
+                        autofocus
+                      >
+                      <div
+                        id="emailHelp"
+                        class="form-text"
+                      ></div>
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleInputPassword1" class="form-label" style="color:#fff">Senha</label>
+                      <input
+                        id="exampleInputPassword1"
+                        class="form-control"
+                        type="password"
+                        name="password"
+                      >
+                    </div>
+                    <div class="mb-3 form-check">
+                      <input
+                        id="exampleCheck1"
+                        class="form-check-input"
+                        type="checkbox"
+                      >
+                      <label class="form-check-label" for="exampleCheck1" style="color:#fff">Lembrar</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+
+                  </form>
+
+                </div>
+              </div>
+              {% for k, v in form.errors.items %}
+                {{ v }}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}

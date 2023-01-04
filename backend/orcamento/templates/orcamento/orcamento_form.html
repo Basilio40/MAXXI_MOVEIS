@@ -1,0 +1,97 @@
+{% extends 'base.html'%}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+  <h4>Orçamento</h4>
+  <p>Data Inicial: {{ orcamento.created|date:"d/m/Y" }}</p>
+  <form action="." method="POST">
+    {% csrf_token %}
+
+    <div class="form-row">
+      <div class="row">
+        {% for field in form.visible_fields %}
+          <div class="form-group col-sm-3">
+            <label>{{ field.label }}</label>
+            {% render_field field class="form-control" %}
+            {% for error in field.errors %}
+              <span class="text-muted">{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    {{ formset.management_form }}
+
+    <div class="row">
+      <div class="col-sm-12">
+        <legend class="legend">Itens do Orçamento</legend>
+        <div>
+          <button
+            id="addItem"
+            class='btn btn-primary mb-2'
+            hx-get="{% url 'orcamento:add_row_orcamento_items_hx' %}"
+            hx-target="#orcamento"
+            hx-swap="beforeend"
+          >Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="orcamento" class="form-inline">
+
+      {% for orcamento_item_form in formset %}
+        <div id="item-{{ forloop.counter0 }}" class="row d-flex align-items-end">
+          <div class="col">
+            {% render_field orcamento_item_form.orcamento data-field='orcamento' %}
+            {{ orcamento_item_form.id }}
+
+            {{ orcamento_item_form.produto.label }}
+            {% render_field orcamento_item_form.produto class="form-control" hx-get="/orcamento/orcamento/produto/preco/" hx-target="#id_valor" hx-swap="outerHTML" data-field='produto' %}
+          </div>
+
+          <div class="col">
+            {{ orcamento_item_form.patrimonio.label }}
+            {% render_field orcamento_item_form.patrimonio class="form-control" data-field='patrimonio' %}
+          </div>
+
+          <div class="col">
+            {{ orcamento_item_form.quantidade.label }}
+            {% render_field orcamento_item_form.quantidade class="form-control" data-field='quantidade' %}
+          </div>
+
+          <div class="col">
+            {{ orcamento_item_form.valor.label }}
+            {% render_field orcamento_item_form.valor class="form-control" data-field='valor' %}
+          </div>
+
+          <div class="col-auto">
+            <span class="span-is-link no ml-2" onclick="removeRow()">
+              <i class="fa fa-times fa-lg"></i>
+            </span>
+          </div>
+        </div>
+      {% endfor %}
+
+    </div>
+
+    <div class="mt-4">
+      <button class='btn btn-primary' type="submit">Salvar</button>
+      <button type="button" class="btn btn-danger">Cancelar</button>
+    </div>
+
+  </form>
+{% endblock content %}
+
+{% block js %}
+  <script src="{% static 'js/orcamento.js' %}"></script>
+
+  <script>
+    // Necessário por causa do delete
+    document.body.addEventListener('htmx:configRequest', (event) => {
+      event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+    });
+  </script>
+
+{% endblock js %}

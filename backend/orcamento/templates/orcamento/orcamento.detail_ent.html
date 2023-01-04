@@ -1,0 +1,31 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block content %}
+       </div>
+      <div class="col-6">
+        <h4>Itens do Orçamento</h4>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Patrimônio</th>
+              <th class="text-center">Quantidade</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          {% for item in object.orcamentos.all %}
+            <tr>
+              <td>{{ item.produto }}</td>
+              <td>{{ item.patrimonio|default:"---" }}</td>
+              <td class="text-center">{{ item.quantidade }}</td>
+              <td>
+                R$ <span style="float: right">{{ item.valor|default:"---" }}</span>
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </main>
+{% endblock content %}

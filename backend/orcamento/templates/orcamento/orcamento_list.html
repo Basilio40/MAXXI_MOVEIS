@@ -1,0 +1,146 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block content %}
+
+  <div class="card">
+    <div class="d-flex bd-highlight">
+      <div class="card-body">
+
+        <h4 class="card-title mb-3">
+          Orçamentos
+          <a href="{% url 'crm:cliente_create' %}">
+            <button type="button" class="btn btn-link shadow-none">
+              Cadastrar
+            </button>
+          </a>
+          <div class="dropdown d-inline">
+            <a class="dropdown-toggle text-muted me-3 mb-3 align-middle" href="#" data-bs-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <button type="button" class="btn btn-link shadow-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="feather feather-search icon-sm">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg><span>Buscar</span>
+              </button></a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0">
+              <form class="p-2">
+                <div class="search-box">
+                  <div class="position-relative">
+
+                    <input type="text" name="search" class="form-control rounded bg-light border-0"
+                      hx-get="{% url 'produto:produto_items_search' %}"
+                      hx-trigger="keyup changed delay:250ms, search"
+                      hx-target="#search-results" placeholder="buscando...">
+
+                    <span id="search-results"></span>
+
+                  </div>
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </h4>
+
+        <div class="table-responsive">
+          <table class="table table-hover mb-0 align-middle">
+            <thead class="bg-light">
+              <tr>
+                <th class="rounded-start" style="width: 15px;">
+                  <div class="form-check">
+                    <input class="form-check-input font-size-16" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault"> </label>
+                  </div>
+                </th>
+                <th>OC</th>
+                <th>Nome</th>
+                <th>Endereço de Entrega</th>
+                <th>Frete</th>
+                <th>Prazo</th>
+                <th>Montagem</th>
+                <th>Total Orçamento</th>
+                <th>OBS</th>
+                <th>Status</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+              <!-- end tr -->
+            </thead>
+            <!-- end thead -->
+            <tbody>
+              {% for object in object_list %}
+                <tr>
+                  <td>
+                    <div class="form-check">
+                      <input class="form-check-input font-size-16" type="checkbox" value="" id="flexCheckexampleone">
+                      <label class="form-check-label" for="flexCheckexampleone">
+                      </label>
+                    </div>
+                  </td>
+                  <td class="fw-medium">
+                    MA {{ object}}
+                  </td>
+                  <td>
+                    <a href="{{ object.get_absolute_url }}">{{ object.cliente }}</a>
+                  </td>
+                  <td>
+                    {{ object.endereco_entrega }}
+                  </td>
+
+                  <td>
+                    {{ object.frete}}
+                  </td>
+                  <td>
+                    {{ object.periodo}} dia(s)
+                  </td>
+                  <td>
+                    {{ object.montagem}}
+                  </td>
+
+                  <td class="">R$ <span style="float: right">{{ object.total }}</td>
+                  <td>
+                    {{ object.get_status_display }}
+                  </td>
+                  <td>
+                    <div class="d-flex">
+                      <div class="me-2">
+                        {% if object.active %}
+                          <i class="mdi mdi-check-circle-outline text-success"></i>
+                        {% else %}
+                          <i class="mdi mdi-close-circle-outline text-danger"></i>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    {% if object.contrato %}
+                      <a href="{% url 'orcamento:contrato_detail' object.contrato.pk %}">Contrato</a>
+                    {% endif %}
+                  </td>
+                  <td style="min-width: 70px">
+                    {% if object.status != 'f' %}
+                      <span>
+                        <a href="{% url 'orcamento:orcamento_update' object.pk %}"><i class="mdi mdi-pencil text-success me-1"></i></a>
+                      </span>
+                    {% endif %}
+                    <span>
+                      <a href="{% url 'orcamento:orcamento_delete' object.pk %}"><i class="mdi mdi-trash-can text-danger me-1"></i></a>
+                    </span>
+                  </td>
+                </tr>
+              {% endfor %}
+
+              <!-- end /tr -->
+            </tbody><!-- end tbody -->
+          </table><!-- end table -->
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+

@@ -1,0 +1,39 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8" />
+    <title>MAXXI MOVEIS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Template Referencia -->
+    <!-- https://preview.pichforest.com/dashonic/layouts/layouts-horizontal-dark.html# -->
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}">
+
+    <!-- plugin css -->
+    <link href="{% static 'css/jsvectormap.min.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- Bootstrap Css -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- Icons Css -->
+    <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- App Css-->
+    <link href="{% static 'css/app.min.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.7.0"></script>
+
+  </head>
+
+  <body data-layout="horizontal" data-layout-mode= "light" data-topbar="dark" data-sidebar="light" style="background-color: #7F0203;">
+
+    {% block content %}{% endblock content %}
+
+    {% block js %}{% endblock js %}
+
+  </body>
+</html>
